@@ -9,6 +9,7 @@ int main() {
     tester(test);
 
     // double-check sizeof(struct Header)
+    // create init_addr array and remove need to pass around init_addr
 
     return 0;
 }
