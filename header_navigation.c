@@ -47,3 +47,23 @@ bool allocate_segment(size_t req_size, struct Header *header)
         return false;
     }
 }
+
+void move_segment(struct Header *origin, struct Header *destination)
+{
+    size_t total_bytes;
+    if (origin->size > destination->size) {
+        total_bytes = destination->size;
+    } else {
+        total_bytes = origin->size;
+    }
+
+    char *origin_curr = origin + 1;
+    char *destination_curr = destination + 1;
+
+    for (size_t byte = 0; byte < total_bytes; ++byte) {
+        *destination_curr = *origin_curr;
+
+        ++destination_curr;
+        ++origin_curr;
+    }
+}
