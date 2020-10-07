@@ -35,7 +35,6 @@ void *mem_alloc(size_t req_size, void *init_addr)
         }
 
         // get address of next segment to check
-        //curr_addr = *(curr_addr + SIZE_OFFSET) + HEADER_SIZE;
         curr_addr = (char *)curr_addr + curr_addr->size + sizeof(struct Header);
     }
 
