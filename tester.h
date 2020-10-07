@@ -3,6 +3,6 @@
 
 #include <stddef.h>
 
-void tester(int *);
+void tester(void *);
 
 #endif

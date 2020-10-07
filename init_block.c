@@ -2,27 +2,26 @@
 #include <stdbool.h>
 
 #include "constants.h"
+#include "construct_header.h"
 
 void *init_block(size_t size)
 {
-    int *start_addr = malloc(size);
+    void *init_addr = malloc(size);
 
-   // create start bound optimization
-    *(start_addr + BUSY_OFFSET) = true;
-    *(start_addr + SIZE_OFFSET) = 0;
-    *(start_addr + PREV_OFFSET) = 0;
+    // create pointers to each header
+    struct Header *start_bound_ptr = init_addr;
+    struct Header *useable_ptr = start_bound_ptr + 1;
+    struct Header *end_bound_ptr = (char *) init_addr + size - sizeof(struct Header);
 
-    // initialize useable space
-    int *init_header = start_addr + HEADER_SIZE;
-    *(init_header + BUSY_OFFSET) = false;
-    *(init_header + SIZE_OFFSET) = size - (3 * HEADER_SIZE);
-    *(init_header + PREV_OFFSET) = 0;
+    // define start bound optimization
+    *(start_bound_ptr) = construct_header(true, 0, 0);
 
-    // create end bound optimization
-    int *end_header = start_addr + size - HEADER_SIZE;
-    *(end_header + BUSY_OFFSET) = true;
-    *(end_header + SIZE_OFFSET) = 0;
-    *(end_header + PREV_OFFSET) = 0;
+    // define useable block
+    size_t useable_size = size - (3 * sizeof(struct Header));
+    *(useable_ptr) = construct_header(false, useable_size, 0);
 
-    return init_header;
+    // define end bound optimization
+    *(end_bound_ptr) = construct_header(true, 0, useable_size);
+
+    return useable_ptr;
 }

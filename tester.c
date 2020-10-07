@@ -6,18 +6,18 @@
 #include "mem_alloc.h"
 #include "constants.h"
 
-void tester(int *init_addr)
+void tester(void *init_addr)
 {
-    int *curr_addr = init_addr;
+    struct Header *curr_addr = init_addr;
     srand(time(NULL));
 
     while (1)
     {
-        printf("address: %p\nbusy: %d\nsize: %d\nprev_size: %d\n\n",
+        printf("address: %p\nbusy: %d\nsize: %ld\nprev_size: %ld\n\n",
                 curr_addr,
-                *(curr_addr + BUSY_OFFSET),
-                *(curr_addr + SIZE_OFFSET),
-                *(curr_addr + PREV_OFFSET));
+                curr_addr->busy,
+                curr_addr->size,
+                curr_addr->prev);
 
         curr_addr = mem_alloc(rand() % 128 + 1, init_addr);
 
@@ -25,6 +25,6 @@ void tester(int *init_addr)
             break;
         }
         
-        curr_addr -= HEADER_SIZE;
+        --curr_addr; // because mem_alloc returns pointer to the address immediately after the header
     }
 }

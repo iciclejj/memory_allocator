@@ -6,10 +6,3 @@ const size_t HEADER_SIZE = sizeof(bool) + sizeof(size_t) + sizeof(size_t);
 const size_t BUSY_OFFSET = 0;
 const size_t SIZE_OFFSET = sizeof(bool);
 const size_t PREV_OFFSET = sizeof(bool) + sizeof(size_t);
-
-struct Header
-{
-    bool busy;
-    size_t size;
-    size_t prev;
-};

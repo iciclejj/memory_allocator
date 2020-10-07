@@ -4,7 +4,7 @@
 #include "tester.h"
 
 int main() {
-    int *test = init_block(1024);
+    void *test = init_block(1024);
 
     tester(test);
 

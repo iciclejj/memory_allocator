@@ -3,6 +3,6 @@
 
 #include <stddef.h>
 
-void *mem_alloc(size_t, int *);
+void *mem_alloc(size_t, void *);
 
 #endif
