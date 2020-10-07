@@ -8,5 +8,7 @@ int main() {
 
     tester(test);
 
+    // double-check sizeof(struct Header)
+
     return 0;
 }
