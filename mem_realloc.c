@@ -10,7 +10,13 @@ void *mem_realloc(size_t req_size, void *addr, void *init_addr)
 {
     struct Header *new_addr = mem_alloc(req_size, init_addr);
 
-    move_segment(addr, new_addr);
+    if (new_addr != NULL)
+    {
+        copy_segment(addr, new_addr);
+        mem_free(addr);
+    }
+    
+    return new_addr;
 
 /*
     struct Header *curr_header = addr;
