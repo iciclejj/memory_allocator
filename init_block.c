@@ -8,6 +8,10 @@ void *init_block(size_t size)
 {
     void *init_addr = malloc(size);
 
+    if (init_addr == NULL) {
+        return NULL;
+    }
+
     // create pointers to each header
     struct Header *start_bound_ptr = init_addr;
     struct Header *useable_ptr = start_bound_ptr + 1;

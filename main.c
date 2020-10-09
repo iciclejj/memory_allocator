@@ -6,9 +6,10 @@
 int main() {
     void *test = init_block(1024);
 
-    tester(test);
+    if (test != NULL) {
+        tester(test);
+    }
 
-    // double-check sizeof(struct Header)
     // create init_addr array and remove need to pass around init_addr
 
     return 0;
