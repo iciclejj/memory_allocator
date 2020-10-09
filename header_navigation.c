@@ -48,7 +48,7 @@ bool allocate_segment(size_t req_size, struct Header *header)
     }
 }
 
-void move_segment(struct Header *origin, struct Header *destination)
+void copy_segment(struct Header *origin, struct Header *destination)
 {
     size_t total_bytes;
     if (origin->size > destination->size) {
