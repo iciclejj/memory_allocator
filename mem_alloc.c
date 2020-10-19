@@ -8,7 +8,7 @@ void *mem_alloc(size_t req_size, void *init_addr)
 {
     struct Header *curr_header = init_addr;
 
-    while (!is_edge_header(curr_header))
+    while (!is_edge_header(curr_header)) // rewrite for arena struct
     {
         if (allocate_segment(req_size, curr_header))
             break;
@@ -17,6 +17,7 @@ void *mem_alloc(size_t req_size, void *init_addr)
     }
 
     if (is_edge_header(curr_header))
+        // make new arena (return null only when init returns null, aka when arena array is full)
         return NULL;
     else
         return curr_header + 1;
