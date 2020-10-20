@@ -2,13 +2,13 @@
 
 struct Header *get_next_header(struct Header *header)
 {
-    header = (char *)header + header->size + sizeof(struct Header);
+    header = (struct Header *)((char *)header + header->size + sizeof(struct Header));
     return header;
 }
 
 struct Header *get_prev_header(struct Header *header)
 {
-    header = (char *)header - header->prev - sizeof(struct Header);
+    header = (struct Header *)((char *)header - header->prev - sizeof(struct Header));
     return header;
 }
 
@@ -28,8 +28,8 @@ bool allocate_segment(size_t req_size, struct Header *header)
         if (header->size > req_size + sizeof(struct Header))
         {
             // initialize succeeding header
-            struct Header *next_header = (char *)header + req_size +
-                                         sizeof(struct Header);
+            struct Header *next_header = (struct Header *)((char *)header + req_size +
+                                         sizeof(struct Header));
             next_header->busy = false;
             next_header->size = header->size - req_size - sizeof(struct Header);
             next_header->prev = req_size;
@@ -57,8 +57,8 @@ void copy_segment(struct Header *origin, struct Header *destination)
         total_bytes = origin->size;
     }
 
-    char *origin_curr = origin + 1;
-    char *destination_curr = destination + 1;
+    char *origin_curr = (char *)(origin + 1);
+    char *destination_curr = (char *)(destination + 1);
 
     for (size_t byte = 0; byte < total_bytes; ++byte) {
         *destination_curr = *origin_curr;
