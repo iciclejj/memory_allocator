@@ -3,7 +3,6 @@
 
 #include "constants.h"
 #include "header_navigation.h"
-#include "construct_header.h"
 
 void *mem_alloc(size_t req_size, void *init_addr)
 {
@@ -103,14 +102,20 @@ void *init_block(size_t size)
     struct Header *end_bound_ptr = (struct Header *)((char *) init_addr + size - sizeof(struct Header));
 
     // define start bound optimization
-    *(start_bound_ptr) = construct_header(true, 0, 0);
+    start_bound_ptr->busy = false;
+    start_bound_ptr->size = 0;
+    start_bound_ptr->prev = 0;
 
     // define useable block
     size_t useable_size = size - (3 * sizeof(struct Header));
-    *(useable_ptr) = construct_header(false, useable_size, 0);
+    useable_ptr->busy = false;
+    useable_ptr->size = useable_size;
+    useable_ptr->prev = 0;
 
     // define end bound optimization
-    *(end_bound_ptr) = construct_header(true, 0, useable_size);
+    end_bound_ptr->busy = true;
+    end_bound_ptr->size = 0;
+    end_bound_ptr->prev = useable_size;
 
     return useable_ptr;
 }
