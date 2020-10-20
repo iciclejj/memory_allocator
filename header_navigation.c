@@ -22,11 +22,7 @@ bool is_edge_header(struct Header *header)
 
 bool allocate_segment(size_t req_size, struct Header *header)
 {
-    if (req_size == 0)
-    {
-        return false;
-    }
-    else if (header->size >= req_size)
+    if (header->size >= req_size && req_size > 0)
     {
         // split into two segments if enough space; else allocate entire
         if (header->size > req_size + sizeof(struct Header))
