@@ -11,8 +11,11 @@ void *mem_alloc(size_t req_size, void *init_addr)
 
     while (!is_edge_header(curr_header)) // rewrite for arena struct
     {
-        if (allocate_segment(req_size, curr_header))
-            break;
+        if (curr_header->busy == false) {
+            if (allocate_segment(req_size, curr_header)) { 
+                break;
+            }
+        }
         else
             curr_header = get_next_header(curr_header);
     }
