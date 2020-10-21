@@ -20,6 +20,9 @@ bool is_edge_header(struct Header *header)
         return false;
 }
 
+// give the passed header a size of at least req_size if its current size is big enough.
+// also split into two segments if enough space. the extra segment gets set to busy=false.
+// caller is responsible for setting and checking the busy flag of the passed header (not touched by this function);
 bool allocate_segment(size_t req_size, struct Header *header)
 {
     if (header->size >= req_size && req_size > 0)
