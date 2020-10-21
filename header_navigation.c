@@ -1,3 +1,4 @@
+#include "header_navigation.h"
 #include "constants.h"
 
 struct Header *get_next_header(struct Header *header)
