@@ -76,6 +76,7 @@ void mem_free(void *addr)
     struct Header *curr_header = addr;
     struct Header *prev_header = get_prev_header(curr_header);
     struct Header *next_header = get_next_header(curr_header);
+    struct Header *next_next_header = get_next_header(next_header);
 
     curr_header->busy = false;
 
@@ -83,10 +84,12 @@ void mem_free(void *addr)
     if (next_header->busy == false)
     {
         curr_header->size += next_header->size + sizeof(struct Header);
+        next_next_header->prev = curr_header->size;
     }
     if (prev_header->busy == false)
     {
         prev_header->size += curr_header->size + sizeof(struct Header);
+        next_next_header->prev = prev_header->size;
     }
 }
 

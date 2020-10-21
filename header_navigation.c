@@ -38,6 +38,10 @@ bool allocate_segment(size_t req_size, struct Header *header)
             next_header->size = header->size - req_size - sizeof(struct Header);
             next_header->prev = req_size;
 
+            // readjust prev of next next header
+            struct Header *next_next_header = get_next_header(next_header);
+            next_next_header->prev = next_header->size;
+
             // readjust header size
             header->size = req_size;
         }
