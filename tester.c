@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "allocation.h"
+#include "allocator.h"
 #include "constants.h"
 
 void tester(void *init_addr)
