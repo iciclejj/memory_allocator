@@ -19,12 +19,11 @@ void tester(void *init_addr)
                 curr_addr->size,
                 curr_addr->prev);
 
-        curr_addr = mem_alloc(rand() % 128 + 1, init_addr);
+        curr_addr = mem_alloc(rand() % 128 + 1);
 
         if (curr_addr == NULL) {
             break;
         }
-        
         --curr_addr; // because mem_alloc returns pointer to the address immediately after the header
     }
 }

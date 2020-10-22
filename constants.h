@@ -11,4 +11,10 @@ struct Header
     size_t prev;
 };
 
+struct Arena
+{
+    void *address;
+    size_t size;
+};
+
 #endif
