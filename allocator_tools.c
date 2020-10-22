@@ -1,5 +1,5 @@
 #include "allocator_tools.h"
-#include "constants.h"
+#include "structures.h"
 
 struct Header *get_next_header(struct Header *header)
 {

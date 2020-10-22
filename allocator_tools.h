@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-#include "constants.h"
+#include "structures.h"
 
 struct Header *get_next_header(struct Header *);
 struct Header *get_prev_header(struct Header *);

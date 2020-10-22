@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 #include "allocator.h"
-#include "constants.h"
+#include "structures.h"
 #include "allocator_tools.h"
 
 #define ARENAS 32

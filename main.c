@@ -1,5 +1,5 @@
 #include "allocator.h"
-#include "constants.h"
+#include "structures.h"
 #include "tester.h"
 
 int main() {

@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "allocator.h"
-#include "constants.h"
+#include "structures.h"
 
 void tester(void *init_addr)
 {
