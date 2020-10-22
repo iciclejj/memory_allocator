@@ -3,7 +3,7 @@
 #include "tester.h"
 
 int main() {
-    void *test = init_block(1024);
+    void *test = init_block(0);
 
     if (test != NULL) {
         tester(test);

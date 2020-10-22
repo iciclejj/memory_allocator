@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "allocation.h"
 #include "constants.h"
@@ -15,8 +16,16 @@ void *mem_alloc(size_t req_size)
 
     while (curr_arena < ARENAS) 
     {
+        // create new arena of size getpagesize() if necessary
         if (arena[curr_arena].address == NULL) {
-            return NULL;
+            size_t pagesize = getpagesize();
+            if (req_size <= pagesize - 3 * sizeof(struct Header)) {
+                init_block(pagesize);
+                continue;
+            }
+            else {
+                return NULL;
+            }
         }
 
         struct Header *curr_header = arena[curr_arena].address;
@@ -32,7 +41,6 @@ void *mem_alloc(size_t req_size)
             curr_header = get_next_header(curr_header);
         }
 
-        // TODO: make new arena
         ++curr_arena;
     }
 
@@ -61,13 +69,11 @@ void mem_free(void *addr)
     curr_header->busy = false;
 
     // merge next and/or previous segments if also free
-    if (next_header->busy == false)
-    {
+    if (next_header->busy == false) {
         curr_header->size += next_header->size + sizeof(struct Header);
         next_next_header->prev = curr_header->size;
     }
-    if (prev_header->busy == false)
-    {
+    if (prev_header->busy == false) {
         prev_header->size += curr_header->size + sizeof(struct Header);
         next_next_header->prev = prev_header->size;
     }
@@ -75,6 +81,11 @@ void mem_free(void *addr)
 
 void *init_block(size_t req_size)
 {
+    // use page size if req_size == 0
+    if (req_size == 0) {
+        req_size = (size_t)getpagesize();
+    }
+
     void *init_addr = malloc(req_size);
 
     if (init_addr == NULL) {
@@ -111,7 +122,6 @@ void *init_block(size_t req_size)
         end_bound_ptr->size = 0;
         end_bound_ptr->prev = useable_size;
 
-        return useable_ptr;
+        return init_addr;
     }
-
 }
