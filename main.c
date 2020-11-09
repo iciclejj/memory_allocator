@@ -2,7 +2,7 @@
 #include "structures.h"
 #include "tester.h"
 
-int main() {
+int main(void) {
     void *test = init_block(0);
 
     if (test != NULL) {
