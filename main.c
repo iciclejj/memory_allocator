@@ -7,6 +7,7 @@ int main(void) {
 
     if (test != NULL) {
         tester(test);
+        mem_dump();
     }
 
     // create init_addr array and remove need to pass around init_addr

@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #include "allocator.h"
 #include "structures.h"
@@ -107,7 +108,7 @@ void *init_block(size_t req_size)
                                        req_size - sizeof(struct Header));
 
         // define start bound optimization
-        start_bound_ptr->busy = false;
+        start_bound_ptr->busy = true;
         start_bound_ptr->size = 0;
         start_bound_ptr->prev = 0;
 
@@ -123,5 +124,25 @@ void *init_block(size_t req_size)
         end_bound_ptr->prev = useable_size;
 
         return init_addr;
+    }
+}
+
+void mem_dump(void)
+{
+    size_t curr_arena = 0;
+
+    while (arena[curr_arena].address != NULL) {
+        struct Header *curr_header = arena[curr_arena].address;
+        printf("--- ARENA %ld ---\n\n", curr_arena);
+        do {
+            printf("address: %p\nbusy: %d\nsize: %ld\nprev: %ld\n\n",
+                    curr_header, curr_header->busy, curr_header->size, curr_header->prev);
+            curr_header = get_next_header(curr_header);
+        } while (!is_edge_header(curr_header));
+        // print omitted edge header 
+        printf("address: %p\nbusy: %d\nsize: %ld\nprev: %ld\n\n",
+                curr_header, curr_header->busy, curr_header->size, curr_header->prev);
+
+        ++curr_arena;
     }
 }
