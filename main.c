@@ -10,7 +10,5 @@ int main(void) {
         mem_dump();
     }
 
-    // create init_addr array and remove need to pass around init_addr
-
     return 0;
 }
