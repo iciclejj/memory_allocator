@@ -133,14 +133,14 @@ void mem_dump(void)
 
     while (arena[curr_arena].address != NULL) {
         struct Header *curr_header = arena[curr_arena].address;
-        printf("--- ARENA %ld ---\n\n", curr_arena);
+        printf("--- ARENA %zu ---\n\n", curr_arena);
         do {
-            printf("address: %p\nbusy: %d\nsize: %ld\nprev: %ld\n\n",
+            printf("address: %p\nbusy: %d\nsize: %zu\nprev: %zu\n\n",
                     curr_header, curr_header->busy, curr_header->size, curr_header->prev);
             curr_header = get_next_header(curr_header);
         } while (!is_edge_header(curr_header));
         // print omitted edge header 
-        printf("address: %p\nbusy: %d\nsize: %ld\nprev: %ld\n\n",
+        printf("address: %p\nbusy: %d\nsize: %zu\nprev: %zu\n\n",
                 curr_header, curr_header->busy, curr_header->size, curr_header->prev);
 
         ++curr_arena;

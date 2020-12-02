@@ -13,7 +13,7 @@ void tester(void *init_addr)
 
     while (1)
     {
-        printf("address: %p\nbusy: %d\nsize: %ld\nprev_size: %ld\n\n",
+        printf("address: %p\nbusy: %d\nsize: %zu\nprev_size: %zu\n\n",
                 curr_addr,
                 curr_addr->busy,
                 curr_addr->size,
