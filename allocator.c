@@ -36,7 +36,7 @@ void *mem_alloc(size_t req_size)
         {
             if (curr_header->busy == false) {
                 if (allocate_segment(req_size, curr_header)) { 
-                    return curr_header + 1;
+                    return curr_header + 1; // return pointer to useable space
                 }
             }
             curr_header = get_next_header(curr_header);
@@ -48,21 +48,24 @@ void *mem_alloc(size_t req_size)
     return NULL;
 }
 
-void *mem_realloc(size_t req_size, void *addr)
+void *mem_realloc(size_t req_size, void *addr) // expects pointer to useable space
 {
     struct Header *new_addr = mem_alloc(req_size);
 
     if (new_addr != NULL) {
         copy_segment(addr, new_addr);
         mem_free(addr);
+        return new_addr;
+    } else {
+        return NULL;
     }
-    
-    return new_addr;
 }
 
-void mem_free(void *addr)
+void mem_free(void *addr) // expects pointer to useable space
 {
-    struct Header *curr_header = addr;
+    struct Header *curr_header = (struct Header *)addr;
+    --curr_header;
+
     struct Header *prev_header = get_prev_header(curr_header);
     struct Header *next_header = get_next_header(curr_header);
     struct Header *next_next_header = get_next_header(next_header);
@@ -70,13 +73,18 @@ void mem_free(void *addr)
     curr_header->busy = false;
 
     // merge next and/or previous segments if also free
+    // find cleaner solution?
     if (next_header->busy == false) {
         curr_header->size += next_header->size + sizeof(struct Header);
         next_next_header->prev = curr_header->size;
-    }
-    if (prev_header->busy == false) {
+
+        if (prev_header->busy == false) {
+            prev_header->size += curr_header->size + sizeof(struct Header);
+            next_next_header->prev = prev_header->size;
+        }
+    } else if (prev_header->busy == false) {
         prev_header->size += curr_header->size + sizeof(struct Header);
-        next_next_header->prev = prev_header->size;
+        next_header->prev = prev_header->size;
     }
 }
 
