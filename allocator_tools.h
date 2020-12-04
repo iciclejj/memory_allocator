@@ -11,7 +11,7 @@ struct Header *get_prev_header(struct Header *);
 bool is_edge_header(struct Header *);
 
 bool allocate_segment(size_t, struct Header *);
-void copy_segment(struct Header *, struct Header *);
+void copy_segment(void *, void *);
 
 // create dump function
 

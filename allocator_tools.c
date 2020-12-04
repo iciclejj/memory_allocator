@@ -56,22 +56,21 @@ bool allocate_segment(size_t req_size, struct Header *header)
     }
 }
 
-void copy_segment(struct Header *origin, struct Header *destination)
+void copy_segment(void *origin, void *destination) // expects pointer to useable space
 {
+    struct Header *origin_header = origin - sizeof(struct Header);
+    struct Header *destination_header = destination - sizeof(struct Header);
+
     size_t total_bytes;
-    if (origin->size > destination->size) {
-        total_bytes = destination->size;
-    } else {
-        total_bytes = origin->size;
-    }
 
-    char *origin_curr = (char *)(origin + 1);
-    char *destination_curr = (char *)(destination + 1);
+    if (origin_header->size > destination_header->size)
+        total_bytes = destination_header->size;
+    else
+        total_bytes = origin_header->size;
 
-    for (size_t byte = 0; byte < total_bytes; ++byte) {
-        *destination_curr = *origin_curr;
+    char *origin_curr = origin;
+    char *destination_curr = destination;
 
-        ++destination_curr;
-        ++origin_curr;
-    }
+    for (size_t byte = 0; byte < total_bytes; ++byte)
+        destination_curr[byte] = origin_curr[byte];
 }
