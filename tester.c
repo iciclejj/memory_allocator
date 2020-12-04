@@ -2,6 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "allocator.h"
 #include "structures.h"
@@ -79,6 +80,19 @@ int tester()
                 addr = mem_realloc(size, a[idx].addr);
 
                 if (addr != NULL) {
+                    // check that memory got copied properly
+                    if (size > a[idx].size) {
+                        if (memcmp(addr, a[idx].addr, a[idx].size) != 0) {
+                            printf("Memory copy failed\n");
+                            return -1;
+                        }
+                    } else {
+                        if (memcmp(addr, a[idx].addr, size) != 0) {
+                            printf("Memory copy failed\n");
+                            return -1;
+                        }
+                    }
+
                     a[idx].addr = addr;
                     a[idx].size = size;
                     buf_fill(addr, size);
