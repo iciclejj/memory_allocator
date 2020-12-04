@@ -1,14 +1,15 @@
+#include <stdio.h>
+#include <unistd.h>
+
 #include "allocator.h"
 #include "structures.h"
 #include "tester.h"
 
 int main(void) {
-    void *test = init_block(0);
-
-    if (test != NULL) {
-        tester(test);
-        mem_dump();
-    }
+    if (tester() != 0)
+        printf("Tester failed\n");
+    else 
+        printf("No errors found\n");
 
     return 0;
 }
